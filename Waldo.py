@@ -3,16 +3,34 @@ import numpy as np                          # Numerical Python
 import matplotlib.pyplot as plt             # Python plotting
 from PIL import Image                       # Python Imaging Library
 from numpy.fft import fft2, fftshift, ifft2 # Python DFT
+import os 
+import requests
 
 path_img = "Waldo3.jpg"
 colour = "r"
 sf= 0.2031
 
+def web_scraber(path_img):
+	if (os.path.isfile(path_img) ==True):
+		return path_img
+
+	elif ("https" in path_img):
+		response = requests.get(path_img)
+		cwd = os.getcwd()
+
+		file = open("{}/Waldo_temp.png".format(cwd), "wb")
+		file.write(response.content)
+		file.close()
+		return "Waldo_temp.png"
+		# except:
+		# 	print("Give a correct file path or a correct Url")
+		# 	exit()
+
 class Waldo():
 	"""docstring for ClassName"""
 	def __init__(self, path_img, colour, sf, boxradius=20):
 		#Setup
-		self.img_full = Image.open("Waldo3.jpg")
+		self.img_full = Image.open(path_img)
 		self.chosen_colour = colour
 		self.sf =sf
 		self.box_radius = boxradius
@@ -22,7 +40,6 @@ class Waldo():
 		self.fourier_image()
 		self.sin_cos()
 		self.create_image()
-		self.image_final_print()
 
 	def mono_colour(self):
 		r,g,b = self.img_full.split()
@@ -107,8 +124,12 @@ class Waldo():
 
 
 if __name__ == "__main__":
+	path_img = web_scraber(path_img)
+
 	Waldo = Waldo(path_img, colour, sf)
-	# Waldo.normal_image_print()
+	Waldo.normal_image_print()
 	# Waldo.mono_colour_print()
 	# Waldo.fourier_image_print()
 	# Waldo.image_filtered_print()
+
+	Waldo.image_final_print()
