@@ -5,7 +5,7 @@ from PIL import Image                       # Python Imaging Library
 from numpy.fft import fft2, fftshift, ifft2 # Python DFT
 import math
 
-img = Image.open("Waldo3.jpg")
+img = Image.open("Waldo_temp.jpg")
 data = img.getdata()
 
 r,g,b = img.split()

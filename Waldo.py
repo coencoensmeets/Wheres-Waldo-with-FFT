@@ -6,9 +6,11 @@ from numpy.fft import fft2, fftshift, ifft2 # Python DFT
 import os 
 import requests
 
-path_img = "Waldo3.jpg"
+path_img = "Waldo_temp.jpg"
 colour = "r"
+#0.2031
 sf= 0.2031
+boxradius = 100
 
 def web_scraber(path_img):
 	if (os.path.isfile(path_img) ==True):
@@ -28,7 +30,7 @@ def web_scraber(path_img):
 
 class Waldo():
 	"""docstring for ClassName"""
-	def __init__(self, path_img, colour, sf, boxradius=20):
+	def __init__(self, path_img, colour, sf, boxradius):
 		#Setup
 		self.img_full = Image.open(path_img)
 		self.chosen_colour = colour
@@ -50,7 +52,6 @@ class Waldo():
 		if (self.chosen_colour =="r"):
 			colour_supressed = r_np-(0.5*g_np+b_np)
 		
-
 		elif (self.chosen_colour == "g"):
 			colour_supressed = g_np-(0.5*r_np+b_np)
 
@@ -63,6 +64,7 @@ class Waldo():
 
 	def fourier_image(self):
 		self.Height, self.Width = np.shape(self.img_array)
+		print("Width: {}\nHeight: {}\n".format(self.Width, self.Height))
 		self.img_fourier = fft2(self.img_array)/(self.Width*self.Height)
 		self.img_fourier = fftshift(self.img_fourier)
 
@@ -91,12 +93,22 @@ class Waldo():
 
 	def create_image(self):
 		self.img_filtered_scaled = self.img_filtered/np.max(self.img_filtered)
-		self.img_filtered_scaled = np.abs((self.img_filtered_scaled+.25)/1.2)
+		self.img_filtered_scaled = np.abs((self.img_filtered_scaled+.35)/1.4)
 
+		#Add circle with fading
 		center_coord = np.where(self.img_filtered_scaled == np.amax(self.img_filtered_scaled))
 		for x_coord in range(center_coord[0][0]-self.box_radius, center_coord[0][0]+self.box_radius):
-			for y_coord in range(center_coord[0][0]-self.box_radius, center_coord[1][0]+self.box_radius):
-				self.img_filtered_scaled[x_coord, y_coord] = 0.9
+			for y_coord in range(center_coord[1][0]-self.box_radius, center_coord[1][0]+self.box_radius):
+				if (x_coord >= self.Height) or (y_coord>=self.Width) or(x_coord<0) or (y_coord<0):
+					pass
+				else:
+					# print("X: {}\nY: {}\nWidth: {}\nHeight: {}\n".format(x_coord, y_coord, self.Width, self.Height))
+					radius = np.sqrt((x_coord-center_coord[0][0])**2+(y_coord-center_coord[1][0])**2)
+					if (radius <= self.box_radius):
+						#With fading
+						# self.img_filtered_scaled[x_coord, y_coord] = -(0.5/self.box_radius)*radius+0.9
+						#without fading:
+						self.img_filtered_scaled[x_coord, y_coord] = 0.9
 
 		self.img_filtered_scaled_transposed = np.asarray([self.img_filtered_scaled]*3).transpose(1, 2, 0)
 		# self.img_filtered_scaled = np.abs(filtImg)
@@ -126,10 +138,10 @@ class Waldo():
 if __name__ == "__main__":
 	path_img = web_scraber(path_img)
 
-	Waldo = Waldo(path_img, colour, sf)
-	Waldo.normal_image_print()
-	# Waldo.mono_colour_print()
-	# Waldo.fourier_image_print()
-	# Waldo.image_filtered_print()
+	Waldo = Waldo(path_img, colour, sf, boxradius)
+	# Waldo.normal_image_print()
+	Waldo.mono_colour_print()
+	Waldo.fourier_image_print()
+	Waldo.image_filtered_print()
 
 	Waldo.image_final_print()
