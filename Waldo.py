@@ -134,6 +134,17 @@ class Waldo():
 		plt.imshow(self.img_final)
 		plt.show()
 
+	def update_image(self, sf, file):
+        path_img = web_scraber('images/' + file)
+        self.img_full = Image.open(path_img)
+        self.sf = sf
+
+        #Functions
+        self.mono_colour()
+        self.fourier_image()
+        self.sin_cos()
+        self.create_image()
+
 
 if __name__ == "__main__":
 	path_img = web_scraber(path_img)
