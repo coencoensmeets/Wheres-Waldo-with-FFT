@@ -6,12 +6,12 @@ from numpy.fft import fft2, fftshift, ifft2 # Python DFT
 import os 
 import requests
 
-path_img = "Waldo_temp.jpg"
+path_img = "Waldo3.jpg"
 colour = "r"
-#0.2031
-sf= 0.2031
-boxradius = 100
+sf = 0.2031
+boxradius = 50
 
+#
 def web_scraber(path_img):
 	if (os.path.isfile(path_img) ==True):
 		return path_img
@@ -24,12 +24,9 @@ def web_scraber(path_img):
 		file.write(response.content)
 		file.close()
 		return "Waldo_temp.png"
-		# except:
-		# 	print("Give a correct file path or a correct Url")
-		# 	exit()
 
 class Waldo():
-	"""docstring for ClassName"""
+	#Setup of class Waldo
 	def __init__(self, path_img, colour, sf, boxradius):
 		#Setup
 		self.img_full = Image.open(path_img)
@@ -135,22 +132,24 @@ class Waldo():
 		plt.show()
 
 	def update_image(self, sf, file):
-        path_img = web_scraber('images/' + file)
-        self.img_full = Image.open(path_img)
-        self.sf = sf
+		path_img = web_scraber('images/' + file)
+		self.img_full = Image.open(path_img)
+		self.sf = sf
 
-        #Functions
-        self.mono_colour()
-        self.fourier_image()
-        self.sin_cos()
-        self.create_image()
+		#Functions
+		self.mono_colour()
+		self.fourier_image()
+		self.sin_cos()
+		self.create_image()
 
 
 if __name__ == "__main__":
+	#not in the notebook (Downloads image if path_img is url)
 	path_img = web_scraber(path_img)
 
+
 	Waldo = Waldo(path_img, colour, sf, boxradius)
-	# Waldo.normal_image_print()
+	Waldo.normal_image_print()
 	Waldo.mono_colour_print()
 	Waldo.fourier_image_print()
 	Waldo.image_filtered_print()
