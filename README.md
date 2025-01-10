@@ -17,9 +17,11 @@
 
 ## Where's Waldo
 
-This project was created by [Coen Smeets](https://github.com/coencoensmeets) and [Remco Bertels](https://github.com/remcobertels) for the course 'Signals and Systems' in the Bachelor Mechanical Engineering at Eindhoven University of Technology. It's focus was getting a working implementation of the FFT and using it to find Waldo in a picture before the deadline and thus the code is not the most efficient or clean.
+This project was created by [Coen Smeets](https://github.com/coencoensmeets) and [Remco Bertels](https://github.com/remcobertels) for the course 'Signals and Systems' in the Bachelor Mechanical Engineering at Eindhoven University of Technology.
 
 This is a project that uses the Fast Fourier Transform to find Waldo in a picture. The idea is to use the FFT to find the most prominent frequencies in the image and then use that information to find Waldo. The project is inspired by a exercise from the Radboud University in Nijmegen. The exercise can be found [here](https://www.mbfys.ru.nl/~robvdw/DGCN22/PRACTICUM_2011/LABS_2011/ALTERNATIVE_LABS/Lesson_15.html#9).
+
+> ⚠️ The focus of this project was getting a working implementation of the FFT and using it to find Waldo in a picture before the deadline and thus the code is not the most efficient or clean and it may contain bugs.⚠️ 
 
 ## Built With
 
